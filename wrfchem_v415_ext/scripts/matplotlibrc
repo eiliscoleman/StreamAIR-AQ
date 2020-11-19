@@ -1,0 +1,3 @@
+backend: agg
+axes.formatter.limits: -4, 5
+savefig.dpi: 100

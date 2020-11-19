@@ -1,0 +1,10 @@
+export PATH=$PATH:$HOME/.local/bin:/usr/lib64/openmpi/bin;
+export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/anaconda3/lib:/usr/lib64/python3.6; 
+export PATH=$HOME/anaconda3/bin:$PATH; 
+unset PYTHONPATH; 
+cd /mnt/raid/wrf-chem/wrfchem_v39/scripts && 
+./run.py >& run39.log
+
+
+#start the cams_cri run
+00 05 * * * bash -c 'export PATH=/home/wrf-chem/anaconda3/bin:/home/wrf-chem/.local/bin:/usr/lib64/ccache:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/mnt/raid/wrf-chem/tabish/LIBRARIES/mpich/bin/:/usr/include; export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/anaconda3/lib:/usr/lib64/python3.6; unset PYTHONPATH; cd /mnt/raid/wrf-chem/wrfchem_v39_cams_cri/scripts && ./run.py >& run_wrf4.log'

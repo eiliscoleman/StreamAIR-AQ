@@ -1,0 +1,284 @@
+{
+  "coords": {"Mace Head": {"lon": -9.9, "lat": 53.33, "airport": false},
+             "Shannon": {"lon": -8.914729, "lat": 52.699406, "airport": true},
+             "Dublin": {"lon": -6.26, "lat": 53.35, "airport": false},
+             "Catania": {"lon": 15.065998, "lat": 37.468496, "airport": true},
+             "Galway": {"lon": -9.06, "lat": 53.27, "airport": false},
+             "Cork": {"lon": -8.4863, "lat": 51.8969, "airport": false},
+             "London": {"lon": -0.1278, "lat": 51.5074, "airport": false},
+             "Paris": {"lon": 2.3522, "lat": 48.8566, "airport": false},
+             "Carnsore":{"lon": 2.3522, "lat": 52.1706, "airport": false},
+             "Malinhead":{"lon": 7.3321, "lat": 55.3528, "airport": false}},
+  "input-wps": "../../ECMWF-op",
+  "output-wrf-raw": "../data/output-wrf-raw",
+  "output-wrf": "../data/output-wrf",
+  "output-mh": "../data/output-mh",
+  "output-gw": "../data/output-gw",
+  "output-ck": "../data/output-ck",
+  "output-db": "../data/output-db", 
+  "output-ln": "../data/output-ln",
+  "output-pr": "../data/output-pr",
+  "output-cp": "../data/output-cp",
+  "output-mal": "../data/output-mal",
+  "imgs": "../imgs",
+  "mozbc-dir": "../../mozbc",
+  "fmt": {
+    "date": "%Y-%m-%d_%H:%M:%S"
+  },
+  "namelist": {
+    "wps": "../WPS/namelist.wps",
+    "wrf": "../WRFV3/run/namelist.input"
+ },
+  "execute": [
+    "clean-wrf",
+    "clean-op",
+    "clean-linkgrib",
+    "run-linkgrib",
+    "run-update-namelists",
+    "run-ungrib",
+    "run-metgrid",
+    "run-mv-wps",
+    "run-ln-wrf",
+    "run-update-namelist-nochem",
+    "run-real",
+    "run-mozbc-cam",
+    "run-mozbc-cams",
+    "run-emission-preproc",
+    "run-update-namelist-chem",
+    "run-wrf",
+    "run-mv-wrf",
+    "run-extract-dfiles",
+    "run-make-png-json"
+    ],
+  "clean-linkgrib": {
+    "program": "rm ./aq:* ./metgrid.log*",
+    "dir": "../WPS",
+    "check": false
+  },
+  "clean-log": {
+    "program": "rm *.log",
+    "dir": ".",
+    "check": false
+  },
+  "clean-cam-chem": {
+    "program": "rm rawcam* cam_cat*",
+    "dir": "../../cam-chem",
+    "check": true
+  },
+  "clean-op": {
+    "program": "rm data/input-wrf/* data/output-wrf-raw/* data/output-wrf/*",
+    "dir": "..",
+    "check": false
+  },
+  "clean-wrf": {
+    "program": "rm met_em* rsl.* wrfout* wrfb* wrfi* wrfrst* wrffire* wrfchemi*",
+    "dir": "../WRFV3/run",
+    "check": false
+  },
+  "run-mozbc-cam": {
+    "program": "./mozbc < CRIMECH-601-newwmacc.inp > moz_cam.out",
+    "dir": "../../mozbc_cams2",
+    "check": true
+  },
+  "run-mozbc-cams": {
+    "program": "./mozbc < CRIMECH-601-cams.inp > moz_cams.out",
+    "dir": "../../mozbc_cams2",
+    "check": true
+  },
+  "run-convert-gifs": {
+    "program": "./convert-gifs-aq.sh",
+    "dir": ".",
+    "check": true
+  },
+  "run-linkgrib": {
+    "program": "./link_grib.csh ../../ECMWF-op/*",
+    "dir": "../WPS",
+    "check": true
+  },
+  "run-extract-mh": {
+    "program": "./components/extract-mh.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-extract-gw": {
+    "program": "./components/extract-gw.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-extract-ck": {
+    "program": "./components/extract-ck.py",
+    "dir": ".",
+    "check": true
+  },  
+  "run-extract-db": {
+    "program": "./components/extract-db.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-extract-ln": {
+    "program": "./components/extract-ln.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-extract-pr": {
+    "program": "./components/extract-pr.py",
+    "dir": ".",
+    "check": true
+  },
+    "run-extract-cp": {
+    "program": "./components/extract-cp.py",
+    "dir": ".",
+    "check": true
+  },
+    "run-extract-mal": {
+    "program": "./components/extract-mal.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-extract-dfiles": {
+    "program": "./components/extract-dfiles.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-extract-csv": {
+    "program": "./components/extract-from-dfiles-op.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-ln-wrf": {
+    "program": "ln -sf ../../data/input-wrf/met_em* .",
+    "dir": "../WRFV3/run",
+    "check": true
+  },
+  "run-metgrid": {
+    "program": "./metgrid.exe",
+    "dir": "../WPS",
+    "check": true
+  },
+  "run-mv-wps": {
+    "program": "mv met_em* ../data/input-wrf",
+    "dir": "../WPS",
+    "check": true
+  },
+  "run-mv-wrf": {
+    "program": "mv $(ls wrfout* | tail -96) ../../data/output-wrf-raw",
+    "dir": "../WRFV3/run",
+    "check": true
+  },
+  "run-postprocess-aq": {
+    "program": "./components/postprocess-aq.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-make-png-json":{
+   "program": "./components/streamair_postproc_new.sh",
+    "dir": ".",
+    "check": false
+  },     
+ "run-real": {
+    "program": "mpiexec -n 48 ./real.exe",
+    "dir": "../WRFV3/run",
+    "check": true
+  },
+  "run-get-cam": {
+    "program": "python components/get-cam-chem.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-rsync-mh-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls *.csv | tail -1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_macehead.csv",
+    "dir": "../data/output-mh",
+    "check": false
+  },
+  "run-rsync-gw-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls *.csv | tail -1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_galway.csv",
+    "dir": "../data/output-gw",
+    "check": false
+  },
+  "run-rsync-ck-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls *.csv | tail -1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_cork.csv",
+    "dir": "../data/output-ck",
+    "check": false
+  },
+  "run-rsync-db-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls *.csv | tail -1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_dublin.csv",
+    "dir": "../data/output-db",
+    "check": false
+  },
+  "run-rsync-ln-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls *.csv | tail -1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_london.csv",
+    "dir": "../data/output-ln",
+    "check": false
+  },
+  "run-rsync-pr-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls *.csv | tail -1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_paris.csv",
+    "dir": "../data/output-pr",
+    "check": false
+  },
+    "run-rsync-cp-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls *.csv | tail -1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_carn.csv",
+    "dir": "../data/output-cp",
+    "check": false
+  },
+    "run-rsync-mal-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls *.csv | tail -1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_malin.csv",
+    "dir": "../data/output-mal",
+    "check": false
+  },
+  "run-rsync-mh-day-1-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls -t *.csv | head -n2 | tail -n 1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_day-1.csv",
+    "dir": "../data/output-mh",
+    "check": false
+  },
+  "run-rsync-mh-day-2-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls -t *.csv | head -n3 | tail -n 1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_day-2.csv",
+    "dir": "../data/output-mh",
+    "check": false
+  },
+  "run-rsync-db-day-1-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls -t *.csv | head -n2 | tail -n 1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_dublin_day-1.csv",
+    "dir": "../data/output-db",
+    "check": false
+  },
+  "run-rsync-db-day-2-csv": {
+    "program": "rsync -az -e 'ssh -p 8222' $(ls -t *.csv | head -n3 | tail -n 1) MH_MET@140.203.204.130:/home/MH_MET/DATA/WRFCHEM_3.9cri_streamair_dublin_day-2.csv",
+    "dir": "../data/output-db",
+    "check": false
+  },
+
+  "run-ungrib": {
+    "program": "./ungrib.exe",
+    "dir": "../WPS",
+    "check": true
+  },
+  "run-update-namelists": {
+    "program": "./components/update-namelists.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-update-namelist-chem": {
+    "program": "./components/update_namelist_chem.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-update-namelist-nochem": {
+    "program": "./components/update_namelist_nochem.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-emission-input": {
+    "program": "./components/update_emissions_date_new.sh",
+    "dir": ".",
+    "check": true
+  },
+  "run-emission-preproc": {
+    "program": "./components/dublin_secondary_emissions_crimech.py",
+    "dir": ".",
+    "check": true
+  },
+  "run-wrf": {
+    "program": "mpiexec -n 48 ./wrf.exe",
+    "dir": "../WRFV3/run",
+    "check": true
+  }
+}
