@@ -24,8 +24,8 @@ work_root_dir='/mnt/raid/wrf-chem/wrfchem_v415_ext'
 scripts_dir=os.path.join(work_root_dir,'scripts/components')
 #ecmwf_path=os.path.join(work_root_dir, 'data/input-wps')
 ecmwf_path='/mnt/raid/wrf-chem/ECMWF-op-VOLCEX'
-emis_preproc_dir='/mnt/raid/wrf-chem/emis/WRF_EMIS_UoM_UEA_v415_ext'
-enh_emis_dir=os.path.join(emis_preproc_dir, 'solid_fuel_emis2') 
+emis_preproc_dir=os.path.join(work_root_dir,'WRF_EMIS_UoM_UEA_v415_ext')
+enh_emis_dir=os.path.join(work_root_dir, 'data/input-emis/solid_fuel_emis') 
 wrfrundir=os.path.join(work_root_dir,'WRFV3/run')
 
 
