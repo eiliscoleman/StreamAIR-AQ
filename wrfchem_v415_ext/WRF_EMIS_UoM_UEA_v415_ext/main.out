@@ -1,0 +1,970 @@
+ ************************************************
+ *                                              *
+ *   WRF/Chem emission preprocessor program     *
+ *   --------------------------------------     *
+ *                                              *
+ * This program makes anthropogenic emissions   *
+ * from several inventories available as input  *
+ * to the WRF/Chem model.                       *
+ *                                              *
+ *        - See README for more info -          *
+ *                                              *
+ ************************************************
+ 
+  - Reading namelist
+ 
+ INPUT OPTIONS:
+ **************
+ Month:                        1
+ Year:                      2017
+ Time zone:                    0
+ Using RADM2 chemical scheme
+ Read LANUV data:                 F F F F F
+ Read NAEI data:                  F T T F F
+ Read INERIS data:                F F F F F
+ Read RETRO data:                 F F F F F
+ Read TNO data:                   T F F F F
+ Scale hour:                      F
+ Scale season:                    T
+ Read NAEI point sources:         T
+ Read London NAEI data:           T
+ Read London NAEI point sources:  T
+ Read Ruhr LANUV data:            T
+ Coarser background emissions:    F
+ Coarser city emissions:          F
+ Remove emissions in city:        F
+ Number of domains:            1
+
+ DOMAIN 01
+ x-dim:          106
+ y-dim:          114
+ z-dim:            5
+ Resolution  :    25000.000    
+ Centre point:    52.314999      -1.5060000    
+
+ - Calculating height approximations
+           1           1   50.000000       1.0000000    
+           1           2   6.0000000      5.99999987E-02
+           2           2   80.000000      0.80000001    
+           3           2   14.000000      0.14000000    
+           3           3   91.000000      0.91000003    
+           4           3   9.0000000      9.00000036E-02
+           4           4   120.00000      0.80000001    
+           5           4   30.000000      0.20000000    
+   - Reading from file: ./input/scaling_factors/MonthlyFac_CO.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_NOx.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_SOx.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_NH3.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_NMVOC.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_P10.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_P25.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_P25.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_P25.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_P10.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_P25.dat
+   - Reading from file: ./input/scaling_factors/MonthlyFac_P10.dat
+    - Done reading seasonal factors
+ ini scale_daily_init
+   - Reading from file: ./input/scaling_factors/DailyFac_CO.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_NOx.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_SOx.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_NH3.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_NMVOC.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_P10.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_P25.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_P25.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_P25.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_P10.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_P25.dat
+   - Reading from file: ./input/scaling_factors/DailyFac_P10.dat
+    - Done reading daily factors
+  - Reading NAEI UK emissions from dat files
+   - Reading from file: ./input/NAEI/2017/CO/energyprodco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/domcomco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/indcomco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/indprocco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/offshoreco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/solventsco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/roadtransco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/tra2co15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/tra3co15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/tra4co15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/tra5co15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/othertransco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/wasteco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/agricco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/natureco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/totareaco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/CO/totalco15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/energyprodnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/domcomnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/indcomnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/indprocnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/offshorenox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/solventsnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/roadtransnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/tra2nox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/tra3nox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/tra4nox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/tra5nox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/othertransnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/wastenox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/agricnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/naturenox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/totareanox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NOX/totalnox15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/energyprodso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/domcomso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/indcomso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/indprocso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/offshoreso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/solventsso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/roadtransso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/tra2so215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/tra3so215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/tra4so215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/tra5so215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/othertransso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/wasteso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/agricso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/natureso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/totareaso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/SO2/totalso215.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/energyprodnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/domcomnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/indcomnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/indprocnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/offshorenh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/solventsnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/roadtransnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/tra2nh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/tra3nh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/tra4nh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/tra5nh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/othertransnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/wastenh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/agricnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/naturenh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/totareanh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/NH3/totalnh315.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/energyprodvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/domcomvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/indcomvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/indprocvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/offshorevoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/solventsvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/roadtransvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/tra2voc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/tra3voc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/tra4voc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/tra5voc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/othertransvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/wastevoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/agricvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/naturevoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/totareavoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/VOC/totalvoc15.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/energyprodpm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/domcompm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/indcompm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/indprocpm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/offshorepm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/solventspm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/roadtranspm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/tra2pm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/tra3pm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/tra4pm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/tra5pm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/othertranspm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/wastepm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/agricpm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/naturepm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/totareapm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM10/totalpm1015.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/energyprodpm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/domcompm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/indcompm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/indprocpm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/offshorepm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/solventspm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/roadtranspm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/tra2pm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/tra3pm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/tra4pm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/tra5pm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/othertranspm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/wastepm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/agricpm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/naturepm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/totareapm2_515.asc
+     File does not exist for this source. Setting source to zero
+   - Reading from file: ./input/NAEI/2017/PM2_5/totalpm2_515.asc
+     File does not exist for this source. Setting source to zero
+NAEI: Sum of CO    =           0.000 t/yr
+NAEI: Sum of NOX   =           0.000 t/yr
+NAEI: Sum of SO2   =           0.000 t/yr
+NAEI: Sum of NH3   =           0.000 t/yr
+NAEI: Sum of VOC   =           0.000 t/yr
+NAEI: Sum of PM10  =           0.000 t/yr
+NAEI: Sum of PM2_5 =           0.000 t/yr
+  - Done reading from input .txt files
+  - Calculating latitudes and longitudes for NAEI grid
+ Min and max lon  -10.479773       4.8352852    
+ Min and max lat   49.288597       61.829716    
+  - Done calculating latitudes and longitudes
+   - Writing to file: ./plotfiles/naei_2013_1_CO.dat
+   - Writing to file: ./plotfiles/naei_2013_1_NOX.dat
+   - Writing to file: ./plotfiles/naei_2013_1_SO2.dat
+   - Writing to file: ./plotfiles/naei_2013_1_NH3.dat
+   - Writing to file: ./plotfiles/naei_2013_1_VOC.dat
+   - Writing to file: ./plotfiles/naei_2013_1_PM10.dat
+   - Writing to file: ./plotfiles/naei_2013_1_PM2_5.dat
+  - Dividing VOC species based on sources
+  - Sum VOC before speciation:    0.0000000      tons/yr
+  - Sum VOC after speciation:     0.0000000      tons/yr
+  - Done dividing VOC species
+   - Allocating PM emissions
+  - Reading ./input/components.txt                                                                                                                                          
+
+  - Reading tno emissions from nc files
+ 
+Name of component: CO                                                                              
+ number:        1
+Mole mass:          28.010
+Filename:          ./input/TNO_EMISS/tno_co.nc                                                                                                                                     
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: CO                                                                              
+ number:        1
+Mole mass:          28.010
+Filename:          ./input/TNO_EMISS/tno_ship_co.nc                                                                                                                                
+ got variable ships     
+ done reading nc
+ -------------------------------------------------------------
+Name of component: NOX                                                                             
+ number:        2
+Mole mass:          46.000
+Filename:          ./input/TNO_EMISS/tno_nox.nc                                                                                                                                    
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: NOX                                                                             
+ number:        2
+Mole mass:          46.000
+Filename:          ./input/TNO_EMISS/tno_ship_nox.nc                                                                                                                               
+ got variable ships     
+ done reading nc
+ -------------------------------------------------------------
+Name of component: SO2                                                                             
+ number:        3
+Mole mass:          64.054
+Filename:          ./input/TNO_EMISS/tno_so2.nc                                                                                                                                    
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: SO2                                                                             
+ number:        3
+Mole mass:          64.054
+Filename:          ./input/TNO_EMISS/tno_ship_so2.nc                                                                                                                               
+ got variable ships     
+ done reading nc
+ -------------------------------------------------------------
+Name of component: NH3                                                                             
+ number:        4
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_nh3.nc                                                                                                                                    
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: VOC                                                                             
+ number:        5
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_voc.nc                                                                                                                                    
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: VOC                                                                             
+ number:        5
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_ship_voc.nc                                                                                                                               
+ got variable ships     
+ done reading nc
+ -------------------------------------------------------------
+Name of component: PM10                                                                            
+ number:        6
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_pm10.nc                                                                                                                                   
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: PM25                                                                            
+ number:        7
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_pm25.nc                                                                                                                                   
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: BC_1                                                                            
+ number:        8
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_bc1.nc                                                                                                                                    
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: EC_1_25                                                                         
+ number:        9
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_ec_1_25.nc                                                                                                                                
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: EC_25_10                                                                        
+ number:       10
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_ec_25_10.nc                                                                                                                               
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: OC_25                                                                           
+ number:       11
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_oc_25.nc                                                                                                                                  
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+Name of component: OC_25_10                                                                        
+ number:       12
+Mole mass:           1.000
+Filename:          ./input/TNO_EMISS/tno_oc_25_10.nc                                                                                                                               
+ got variable pow       
+ done reading nc
+ got variable res       
+ done reading nc
+ got variable inc       
+ done reading nc
+ got variable pei       
+ done reading nc
+ got variable exf       
+ done reading nc
+ got variable sol       
+ done reading nc
+ got variable tra1      
+ done reading nc
+ got variable tra2      
+ done reading nc
+ got variable tra3      
+ done reading nc
+ got variable tra4      
+ done reading nc
+ got variable tra5      
+ done reading nc
+ got variable nrt       
+ done reading nc
+ got variable was       
+ done reading nc
+ got variable agr       
+ done reading nc
+ -------------------------------------------------------------
+  - Done reading from nc files
+  - Write latitudes and longitudes for TNO grid
+   - Writing to file: ./plotfiles/tno_latlon.dat
+  - Done writing latitudes and longitudes
+  - Dividing VOC species based on sources
+   - Sum VOC before speciation:   1.17868984E+10  tons/yr
+   - Sum VOC after speciation:    1.05941955E+10  tons/yr
+  - Done dividing VOC species
+   - Allocating PM emissions
+ nnpm10=           6
+ nnpm25=           7
+ nnbc1=           8
+ nnec125=           9
+ nnec2510=          10
+ nnoc25=          11
+ nnoc2510=          12
+ - Defining megacity / hot spot region
+  - No region defined!
+  - Will read latitudes and longitudes from wrfinput file: 
+   -  wrfinput_d01                                                                                                                                                    
+ got variable XLAT
+ got variable XLONG
+ Back from reading wrfinput
+ calling get_wrfcountries
+  - Find country numbers for wrf domain
+ Before wrf_grid if
+ Just about to call wrf_grid
+ In wrf_grid
+ A bit futher in wrf_grid
+ INERIS:    0.0000000      1.90925297E-31  4.57986377E-41  1.90925297E-31
+ NAEI:      0.0000000       0.0000000       0.0000000       0.0000000    
+ LANUV:     0.0000000     -4.79135831E+17   0.0000000       0.0000000    
+ TNO:     29.031250       72.968750      -30.937500       60.937500    
+
+ retro_interval  =    5.0000000    
+ ineris_interval =    2.0000000    
+ naei_interval   =   0.50000000    
+ lanuv_interval  =   0.50000000    
+ retro_tno       =    2.0000000    
+  - Start regridding of emissions to WRF grid
+ j =            1
+ j =            2
+ j =            3
+ j =            4
+ j =            5
+ j =            6
+ j =            7
+ j =            8
+ j =            9
+ j =           10
+ j =           11
+ j =           12
+ j =           13
+ j =           14
+ j =           15
+ j =           16
+ j =           17
+ j =           18
+ j =           19
+ j =           20
+ j =           21
+ j =           22
+ j =           23
+ j =           24
+ j =           25
+ j =           26
+ j =           27
+ j =           28
+ j =           29
+ j =           30
+ j =           31
+ j =           32
+ j =           33
+ j =           34
+ j =           35
+ j =           36
+ j =           37
+ j =           38
+ j =           39
+ j =           40
+ j =           41
+ j =           42
+ j =           43
+ j =           44
+ j =           45
+ j =           46
+ j =           47
+ j =           48
+ j =           49
+ j =           50
+ j =           51
+ j =           52
+ j =           53
+ j =           54
+ j =           55
+ j =           56
+ j =           57
+ j =           58
+ j =           59
+ j =           60
+ j =           61
+ j =           62
+ j =           63
+ j =           64
+ j =           65
+ j =           66
+ j =           67
+ j =           68
+ j =           69
+ j =           70
+ j =           71
+ j =           72
+ j =           73
+ j =           74
+ j =           75
+ j =           76
+ j =           77
+ j =           78
+ j =           79
+ j =           80
+ j =           81
+ j =           82
+ j =           83
+ j =           84
+ j =           85
+ j =           86
+ j =           87
+ j =           88
+ j =           89
+ j =           90
+ j =           91
+ j =           92
+ j =           93
+ j =           94
+ j =           95
+ j =           96
+ j =           97
+ j =           98
+ j =           99
+ j =          100
+ j =          101
+ j =          102
+ j =          103
+ j =          104
+ j =          105
+ j =          106
+ j =          107
+ j =          108
+ j =          109
+ j =          110
+ j =          111
+ j =          112
+ j =          113
+ j =          114
+  - Done regridding
+ Back from wrf_grid
+  - Reading wrfinput_d01 - checking dimensions
+ WARNING: kx not being checked! Verify that kemit in namelist.input equals kx in namelist. kx =            5
+ Start time in wrfinput file: 2017-01-20_00:00:00                                                             
+  - Writing to netcdf file wrfchemi_d01_2017-01-20_00:00:00 (Saturday)
+  - Writing to netcdf file wrfchemi_d01_2017-01-21_00:00:00 (Sunday)
+  - Writing to netcdf file wrfchemi_d01_2017-01-22_00:00:00 (Monday)
+  - Writing to netcdf file wrfchemi_d01_2017-01-23_00:00:00 (Tuesday)
+  - Writing to netcdf file wrfchemi_d01_2017-01-24_00:00:00 (Wednesday)
+
+ Summary for domain 01
+ *********************
+ Note: Values are without diurnal scaling.
+ Average emissions of so2     =   0.81433213      mole/(km^2 hr)
+ Average emissions of no      =    2.6406362      mole/(km^2 hr)
+ Average emissions of ald     =    0.0000000      mole/(km^2 hr)
+ Average emissions of hcho    =   0.23460527      mole/(km^2 hr)
+ Average emissions of ora2    =   6.79188892E-02  mole/(km^2 hr)
+ Average emissions of nh3     =    2.5635409      mole/(km^2 hr)
+ Average emissions of hc3     =   0.31516254      mole/(km^2 hr)
+ Average emissions of hc5     =   3.80844325E-02  mole/(km^2 hr)
+ Average emissions of hc8     =   2.18003038E-02  mole/(km^2 hr)
+ Average emissions of eth     =   0.55334371      mole/(km^2 hr)
+ Average emissions of co      =    9.7955160      mole/(km^2 hr)
+ Average emissions of ol2     =   3.71708646E-02  mole/(km^2 hr)
+ Average emissions of olt     =   2.08570175E-02  mole/(km^2 hr)
+ Average emissions of oli     =    0.0000000      mole/(km^2 hr)
+ Average emissions of tol     =   4.08830531E-02  mole/(km^2 hr)
+ Average emissions of xyl     =   2.41216384E-02  mole/(km^2 hr)
+ Average emissions of ket     =   5.38519472E-02  mole/(km^2 hr)
+ Average emissions of csl     =    0.0000000      mole/(km^2 hr)
+ Average emissions of iso     =    0.0000000      mole/(km^2 hr)
+ Average emissions of pm25i   =   7.42858101E-04  mole/(km^2 hr)
+ Average emissions of pm25j   =   2.97143240E-03  mole/(km^2 hr)
+ Average emissions of so4i    =    0.0000000      mole/(km^2 hr)
+ Average emissions of so4j    =    0.0000000      mole/(km^2 hr)
+ Average emissions of no3i    =    0.0000000      mole/(km^2 hr)
+ Average emissions of no3j    =    0.0000000      mole/(km^2 hr)
+ Average emissions of orgi    =   2.32115170E-04  mole/(km^2 hr)
+ Average emissions of orgj    =   9.28460679E-04  mole/(km^2 hr)
+ Average emissions of eci     =   2.22807052E-04  mole/(km^2 hr)
+ Average emissions of ecj     =   1.55964261E-03  mole/(km^2 hr)
+ Average emissions of pm10    =   5.56299649E-03  mole/(km^2 hr)
+

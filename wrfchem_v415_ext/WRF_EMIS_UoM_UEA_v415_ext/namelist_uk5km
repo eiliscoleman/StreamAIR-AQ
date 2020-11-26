@@ -1,0 +1,73 @@
+! Last updated: November 12, 2010 by Oivind Hodnebrog, oivinho@geo.uio.no
+!                1st December 2010 by T. Pugh
+&general
+ path		= './input/', 
+ year		= 2008,	      
+ month     	= 7,	      
+ io_style_emissions = 1 
+ run_days = 1 
+ chem_scheme    = 2,          
+/
+
+&mapinfo
+ max_dom = 1,
+ id_dom = '01','02','03',
+ ix2 = 239,  120,  100,
+ jx2 = 259,  120,  100,
+ kx = 19,
+ DX2 = 5000,  5000,  1000,
+ XLATC2 = 54.092,  !52.581,  !52.00,
+ XLONC2 = -2.596,  !-1.6967,  !-20.00,
+ CLAT1 = 60.46693,
+ CLAT2 = 48.09184,
+ IPROJ = 1,
+ heights = 0, 56, 136, 241, 370, 534, 0, 0, 0, 0, 0
+ read_geofile   = .false.,
+ read_wrfinput  = .true.,
+/
+
+&reading
+ lanuv		= .false.,
+ naei		= .false.,
+ ineris		= .false.,
+ retro		= .false.,
+ retrotno	= .true.,
+/
+
+&writing
+ wrfchemi = .true.   ! Write data to netCDF files (wrfchemi*) so you don't have to run convert_emiss.exe
+ binary   = .false., ! Write data to binary files "wrfem..." for wrf input
+ ascii    = .false., ! Write data to ascii files "wrfem....dat" for debugging
+ plot     = .false., ! Write data to ascii files that can be plotted in Matlab with the script "wrf_emissions.m"
+/
+
+&scaling
+ scaling_hour   = .false.,  
+ timezone       = 0,  
+ daylight_savings = .true., 
+ scaling_ineris_hour = .false., 
+ scaling_ineris_daily = .false., 
+ day_of_week_init = 5, ! 
+ scaling_season = .false.,  
+/
+
+&intervals
+ lanuv_interval  = 0.5, 
+ naei_interval   = 0.1, 
+ ineris_interval = 2.0, 
+ retro_interval  = 5.0,
+ tno_interval    = 2.0,
+/
+
+&misc        ! NB: USE WITH CAUTION - ONLY FOR SPECIAL CASES
+ naei_pointsrc  = .true.,
+ london         = .true.,
+ london_pointsrc= .true.,
+ ruhr           = .true.,
+ coarser        = .false.,
+ coarser2_ratio = 1, 3, 9, 27, 81,
+ coarser_city   = .false.,
+ coarser2_city_ratio = 1, 3, 9, 27, 81,
+ removing_area  = .false.,
+ city_region    = 'none',
+/

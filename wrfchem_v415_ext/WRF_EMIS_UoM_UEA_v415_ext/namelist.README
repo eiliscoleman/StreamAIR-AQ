@@ -1,0 +1,72 @@
+! Last updated: November 12, 2010 by Oivind Hodnebrog, oivinho@geo.uio.no
+!                1st December 2010 by T. Pugh
+&general
+ path		= './input/', ! where all the input files are
+ year		= 2007,	      ! emission year. INERIS has data from 1998-2007, while RETRO is from 2000. NAEI is for 2005, but scaled to 2003 if "year" is less or equal to 2003.
+ month     	= 5,	      ! Emission month. (1: January, 2: February,..., 12: December). Works for all emission inventories now; RETRO, INERIS, NAEI, and LANUV (since it is scaled from INERIS). If "scaling_season=.false.", then only RETRO data is scaled, and the other emission inventories use yearly mean.
+ io_style_emissions = 2 ! same as in namelist.input (1 = two 12-h files)
+ run_days = 1 ! number of days to generate emission data files (only if io_style_emissions = 2)
+ chem_scheme    = 1,          ! Specify chemical scheme to output to: 1 for RADM2, 2 for CBMZ.
+/
+
+&mapinfo
+ max_dom = 1,		! number of domains
+ id_dom = '01',		! the id/number of each domain
+ ix2 = 55,		! x-dimension of output emission data of each domain
+ jx2 = 75,		! y-dimension of output emission data of each domain
+ kx = 5,		! z-dimension of output emission data of each domain
+ DX2 = 9000,		! horisontal grid spacing (m) of each domain
+ XLATC2 = 40.27, 	! grid center latitude of each domain
+ XLONC2 = 117.04, 	! grid center longitude of each domain
+ CLAT1 = 41.0,		! northern most reference latitude of projection
+ CLAT2 = 39.0,		! southern most reference lat. of proj. (CLAT1 > CLAT2)
+ IPROJ = 1,		! projection type (1: Lambertal, 2: Polar, 3: Mercator)
+ heights = 0, 57, 138, 245, 379, 549, 0, 0, 0, 0, 0 ! lower height limits (m) of the 10 lowest layers in the wrf grid. This is used for calculating vertical distribution of the emissions.
+ read_geofile	= .false., ! Read mapinfo (lats+lons) from geo_em* file(s)
+ read_wrfinput	= .true.,  ! Read mapinfo (lats+lons) from wrfinput-file(s). Recommended .true. for large domains, because this gives more accurate values for lats and lons. The MAPCF routine is not accurate.
+/
+
+&reading
+ lanuv		= .true., ! Use LANUV emission data (covers Ruhr in 1km x 1km), Because of missing information, the LANUV emissions are scaled to INERIS totals. 1 column for each domain.
+ naei           = .true., ! Use NAEI emission data (covers UK in 1km x 1km)
+ ineris		= .true., ! Use INERIS emission data (covers Europe in 0.1deg x 0.1deg). This MUST be .true. if LANUV is to be used.
+ retro		= .true., ! Use RETRO emission data (global coverage in 0.5deg x 0.5deg)
+/
+
+&writing
+ wrfchemi = .true.   ! Write data to netCDF files (wrfchemi*) so you don't have to run convert_emiss.exe
+ binary   = .false., ! Write data to binary files "wrfem..." for wrf input
+ ascii    = .false., ! Write data to ascii files "wrfem....dat" for debugging
+ plot     = .false., ! Write data to ascii files that can be plotted in Matlab with the script "wrf_emissions.m"
+/
+
+&scaling
+ scaling_hour   = .true.,  ! Include diurnal variation in emissions. The factors are based on EMEP values given in file HourlyFac.dat.
+ timezone       = 2,  ! Approximate time zone in your domain as difference from UTC (-11,+12). Used if hourly scaling is chosen. NB: Do not consider daylight saving time here!
+ daylight_savings = .true., ! If daylight saving time is used for this time period. If .true., 1 hour is added to the timezone(s).
+ scaling_ineris_hour = .true., ! If ineris=.true., you can include more accurate diurnal scaling which will consider the time zones of the different European countries.
+ scaling_ineris_daily = .true., ! If ineris=.true. and io_style_emissions = 2, you can scale according to the day of week.
+ day_of_week_init = 5, ! 1: Monday, 2: Tuesday,..., 7: Sunday. Used if ineris=.true., io_style_emissions=2 and scaling_ineris_daily=.true. Choose the weekday of the simulation start date from the wrfinput file. If month is different from wrfinput, you need to set day_of_week_init to the 1st day of the month
+ scaling_season = .true.,  ! Applies to INERIS, LANUV and NAEI, which will be scaled according to the month chosen in the &general section. RETRO is scaled anyway.
+/
+
+&intervals
+ lanuv_interval  = 0.5, ! in km (approx. 1/2 of emission resolution)
+ naei_interval   = 0.5, ! in km (approx. 1/2 of emission resolution)
+ ineris_interval = 2.0, ! in km (approx. 1/5 of emission resolution)
+ retro_interval  = 5.0, ! in km (approx. 1/10 of emission resolution)
+! these variables used to be in regrid.f90, but has been put in namelist because they are important. They determine the accuracy/speed of the bilinear interpolation, and should be set as low as possible. The lower the value of DX, the lower the *_interval values should be set. However, low values of *_interval could lead to slow performance of the emission program. Try with different values until you find a reasonable compromise between accuracy and speed. The above values were found to be reasonably accurate for DX = 9 km.
+/
+
+&misc        ! NB: USE WITH CAUTION - ONLY FOR SPECIAL CASES
+ naei_pointsrc	= .true., ! Remove UK point sources if false. Works only when naei=.true.
+ london		= .true., ! Remove London emissions if false. Works only when naei=.true.
+ london_pointsrc= .true., ! Remove London point sources if false. Works only when naei=.true.
+ ruhr           = .true., ! Remove Ruhr emissions. Works only when lanuv=.true.
+ coarser	= .false.,! Make coarser by ratio. Based on parent domain values before removing_area. All domains must have same wrf-resolution.
+ coarser2_ratio	= 1, 3, 9, 27, 81, ! If coarser = .true., set ratio relative to 1st domain.
+ coarser_city	= .false., ! Only set .true. if coarser=.true.
+ coarser2_city_ratio = 1, 3, 9, 27, 81, ! Set ratio if coarser_city is true.
+ removing_area  = .false.,
+ city_region    = 'none', ! Currently: 'london', 'ruhr' or 'cairo'. Defined in "misc.f90"
+/

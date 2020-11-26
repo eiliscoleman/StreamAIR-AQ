@@ -1,0 +1,111 @@
+ ************************************************
+ *                                              *
+ *   WRF/Chem emission preprocessor program     *
+ *   --------------------------------------     *
+ *                                              *
+ * This program makes anthropogenic emissions   *
+ * from several inventories available as input  *
+ * to the WRF/Chem model.                       *
+ *                                              *
+ *                                              *
+ ************************************************
+
+Author:	Øivind Hodnebrog
+E-mail: oivinho@geo.uio.no
+Date:   28/1-2008
+Updated:12/11-2010
+        02/12/10 - T. Pugh
+
+Current version: WRF_EMIS_v3.3
+
+ --------------------------
+|   Here is a short FAQ:   |
+ --------------------------
+
+Changes by T. Pugh Oct-Dec 2010
+*******************************
+
+1) Modified NAEI routines to read data files directly as download from the NAEI website (http://www.naei.org.uk/).
+Year is automatically selected as defined in namelist. Added file BNGtolatlonconv.f90.
+PM10 and PM2.5 from NAEI also added as inputs with appropriate routine in module_naei.f90 to convert units etc.
+
+Directory structure:
+input >	NAEI >	2007 >	CO >	domcomco07.txt
+				energyprodco07.txt
+				indcomco07.txt
+				indprocco07.txt
+				natureco07.txt
+				offshoreco07.txt
+				othertransco07.txt
+				roadtransco07.txt
+				totalco07.txt
+				totareaco07.txt
+				wasteco07.txt
+				etc...
+			NOX > as above...
+			PM2_5 >
+			PM10 >
+			SO2 >
+			VOC >
+		2008 >	CO >
+			NOX >
+			PM2_5 >
+			PM10 >
+			SO2 >
+			VOC >
+Note that if there is no file for a particular source the routine will set that source to zero.
+
+2) Removed nradm_all, and instead made large arrays allocatable in order to reduce memory requirements. This may lead to problems if many datasets are used simultaneously (not tested), but was necessary in order to use PM emissions.
+3) Added option to speciate to cbmz mechanism. This is not strictly necessary in WRF/Chem at present as WRF/Chem automatically allocates RADM emission to CBMZ, but being able to directly allocate to CBMZ would remove one level of approximation in WRF/Chem.
+4) Made voc_factors into an f90 file, and added documentation of its contents.
+5) Modified regrid.f90 to regrid for NAEI only
+6) Modified regrid.f90 to regrid for NAEI and RETRO simultaneously - DOESN'T WORK PROPERLY AT THE MOMENT, NEED TO ADD A UK LANDMASK.
+7) Added Makefile for compilation.
+
+WHAT HAS CHANGED SINCE VERSION 3.1?
+***********************************
+- Some variables have been added to the namelist:
+  - wrfchemi = .true. ! makes wrfchemi* netCDF files so you don't have to run convert_emiss.exe
+  - io_style_emissions = 2 ! same as in namelist.input (1 = two 12-h files)
+  - run_days = 1 ! number of days to generate emission data files (only if io_style_emissions = 2)
+  - read_wrfinput = .true. ! read lats and lons from wrfinput* file(s). Has to be .true. if wrfchemi = .true.
+  - lanuv_interval,naei_interval,ineris_interval,retro_interval ! these used to be in regrid.f90, but has been put in namelist because they are important. They determine the accuracy/speed of the bilinear interpolation, and should be set as low as possible. The lower the value of DX, the lower the *_interval values should be set. However, low values of *_interval could lead to slow performance of the emission program. The unit is km.
+  - The timediff variable has been removed from the &general section and replaced by timezone in the &scaling section.
+  - Several changes has been done in the &scaling section. If you use INERIS-EMEP emissions (ineris=.true.), the diurnal variation will now consider the different time zones in each of the European countries. You will also be able to include country-specific scaling of the day of week, e.g. to include the effect of less rush hour traffic during weekends. See namelist.README for more info.
+
+- Fire emissions from RETRO have been removed in standard version. If you want to use them you can change r_files to 44 in module_retro and do
+   cd input
+   cp components_with_fire.txt components.txt
+  However, be aware that there is no vertical distribution of the fire emissions! If fire emissions are important for your domain, I recommend obtaining fire emissions from e.g. MODIS data and use the plumerise routine in WRF-Chem for the vertical distribution.
+
+- A bug that would cause doubled ship emissions in the INERIS-EMEP data for year 2006 and 2007 has been fixed
+
+
+HOW TO USE THIS PROGRAM:
+************************
+- ssh to rossby.
+- Compile the program with "./make_rossby.sh".
+- Make the following links (these are just examples):
+   ln -s /mn/sunspot/d1/oivinho/WRF_EMISSIONS/retro/RETROEMIS/ .  # if you use RETRO emissions
+   ln -s ../../WRF_RESULTS/london_t2_base_9x9test/wrfinput_d01 .  # if read_wrfinput = .true.
+   ln -s input/geo_files/london_t2/geo_em.d01.nc .                # if read_geofile = .true.
+- Fill in your options in namelist.
+- Run the program with "main".
+
+NAMELIST OPTIONS, IF max_dom > 1:
+*********************************
+- You have to first generate the wrfinput* files
+- Then 'ncdump -h wrfinput_d02' etc. and copy the variables CEN_LAT and CEN_LON to the namelist.
+
+WHAT TO DO AFTER RUNNING WRF_EMIS_v3.2?
+***************************************
+- If you use the binary files (wrfem*):
+  - See the WRF-Chem User's Guide v3.2 on how to run convert_emiss.exe to generate wrfchemi* files
+- If you have wrfchemi = .true. in the namelist, the wrfchemi* files are already generated
+
+HOW DO I ADD DATA FROM ANOTHER EMISSION INVENTORY?
+**************************************************
+- First you need to make a new module that reads the data, converts the data, split the VOCs, etc... Look at module_retro.f90, module_ineris.f90, module_naei.f90, and module_lanuv.f90 how it's done.
+- Add a namelist variable in the field "&reading".
+- Edit main.f90 to include calls to the routines in the new module.
+- Then edit regrid.f90 and get_values.f90 so that data will be read from the new inventory.

@@ -1,0 +1,73 @@
+! Last updated: November 12, 2010 by Oivind Hodnebrog, oivinho@geo.uio.no
+!                1st December 2010 by T. Pugh
+&general
+ path		= './input/', 
+ year		= 2018,	      
+ month     	= 8,	      
+ io_style_emissions = 2 
+ run_days = 5 
+ chem_scheme    = 2,          
+/
+
+&mapinfo
+ max_dom = 1,
+ id_dom = '01','02','03',
+ ix2 =  106,156,201,
+ jx2 = 114,174,267,
+ kx = 5, 
+ DX2 = 25000,5000,1666.667,
+ XLATC2 = 52.315, 52.87503,  51.91902,
+ XLONC2 = -1.506, 0.1528625,  1.373199,
+ CLAT1 = 52.315,
+ CLAT2 = 52.315,
+ IPROJ = 1,
+ heights = 0, 56, 136, 241, 370, 534, 0, 0, 0, 0, 0
+ read_geofile   = .false.,
+ read_wrfinput  = .true.,
+/
+
+&reading
+ lanuv		= .false.,.false.,.false.,
+ naei		= .false.,.true.,.true.,
+ ineris		= .false.,.false.,.false.,
+ retro		= .false.,.false.,.false.,
+ retrotno	= .true.,.false.,.false.,
+/
+
+&writing
+ wrfchemi = .true.   ! Write data to netCDF files (wrfchemi*) so you don't have to run convert_emiss.exe
+ binary   = .false., ! Write data to binary files "wrfem..." for wrf input
+ ascii    = .false., ! Write data to ascii files "wrfem....dat" for debugging
+ plot     = .false., ! Write data to ascii files that can be plotted in Matlab with the script "wrf_emissions.m"
+/
+
+&scaling
+ scaling_hour   = .false.,  
+ timezone       = 0,  
+ daylight_savings = .true., 
+ scaling_emep_hour = .true., 
+ scaling_emep_daily = .true., 
+ day_of_week_init = 6, ! 
+ scaling_season = .true.,  
+/
+
+&intervals
+ lanuv_interval  = 0.5, 
+ naei_interval   = 0.5, 
+ ineris_interval = 2.0, 
+ retro_interval  = 5.0,
+ tno_interval    = 2.0,
+/
+
+&misc        ! NB: USE WITH CAUTION - ONLY FOR SPECIAL CASES
+ naei_pointsrc  = .true.,
+ london         = .true.,
+ london_pointsrc= .true.,
+ ruhr           = .true.,
+ coarser        = .false.,
+ coarser2_ratio = 1, 3, 9, 27, 81,
+ coarser_city   = .false.,
+ coarser2_city_ratio = 1, 3, 9, 27, 81,
+ removing_area  = .false.,
+ city_region    = 'none',
+/
