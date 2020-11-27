@@ -67,12 +67,12 @@
   },
   "run-mozbc-cam": {
     "program": "./mozbc < CRIMECH-601-newwmacc.inp > moz_cam.out",
-    "dir": "../../mozbc_v4_ext",
+    "dir": "../mozbc",
     "check": true
   },
   "run-mozbc-cams": {
     "program": "./mozbc < CRIMECH-601-cams.inp > moz_cams.out",
-    "dir": "../../mozbc_v4_ext",
+    "dir": "../mozbc",
     "check": true
   },
   "run-linkgrib": {
